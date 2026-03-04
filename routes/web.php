@@ -1,7 +1,14 @@
 <?php
 
+use App\Http\Controllers\VehiculoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*
+|--------------------------------------------------------------------------
+| Web Routes — VIP2CARS
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', fn () => redirect()->route('vehiculos.index'));
+
+Route::resource('vehiculos', VehiculoController::class);
