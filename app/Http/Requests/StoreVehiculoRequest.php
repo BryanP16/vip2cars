@@ -14,17 +14,12 @@ class StoreVehiculoRequest extends FormRequest
 
     public function rules(): array
     {
-        //$vehicleId = $this->route('vehiculo')?->id;
 
         // Obtiene el ID directamente sin depender del modelo
         $vehiculoId = $this->route('vehiculo');
         $vehiculoId = is_object($vehiculoId) ? $vehiculoId->id : $vehiculoId;
 
-        // Para obtener el id_cliente
-        /*$idCliente = is_object($this->route('vehiculo')) 
-            ? $this->route('vehiculo')->id_cliente 
-            : null;*/ 
-         // Busca el vehículo actual para obtener el id_cliente
+        // Busca el vehículo actual para obtener el id_cliente
         $vehiculo = \App\Models\Vehiculo::find($vehiculoId);
         $idCliente = $vehiculo?->id_cliente;
 
@@ -33,7 +28,6 @@ class StoreVehiculoRequest extends FormRequest
             'Nombres'      => ['required', 'string', 'max:100'],
             'Apellidos'       => ['required', 'string', 'max:100'],
             'TipoDocumento'   => ['required', Rule::in(['DNI', 'CE', 'RUC', 'PASSPORT'])],
-            //'NroDocumento' => ['required', 'string', 'max:20'],
             'NroDocumento' => [
                 'required',
                 Rule::unique('clientes')
@@ -61,6 +55,7 @@ class StoreVehiculoRequest extends FormRequest
 
     public function messages(): array
     {
+        /* Mensajes personalizados de las validaciones */
         return [
             'required'               => 'El :attribute es requerido',
             'Apellidos.required'     => 'Los Apellidos son requeridos',
@@ -80,6 +75,7 @@ class StoreVehiculoRequest extends FormRequest
 
     public function attributes(): array
     {
+        /* Atributos de los campos */
         return [
             'Nombres'           => 'nombre',
             'Apellidos'         => 'apellidos',

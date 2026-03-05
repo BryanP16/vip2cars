@@ -14,12 +14,12 @@ use Illuminate\View\View;
 class VehiculoController extends Controller
 {
     /**
-     * Display a paginated listing of vehicles with optional search.
+     * Muestra una lista paginada de vehículos con búsqueda opcional.
      */
     public function index(Request $request): View
     {
         //PARAMETRO DE BUSQUEDA, SI USA EL BUSCAR
-        $busqueda = $request->input('search');
+        $busqueda = $request->input('busqueda');
 
         //LISTADO DE 10 VEHICULOS
         //TENER EN CUENTA QUE TAMBIEN SE PUEDE USAR DATATABLES
@@ -33,7 +33,7 @@ class VehiculoController extends Controller
     }
 
     /**
-     * Show the form for creating a new vehicle + client.
+     * Mostrar el formulario de creación de un nuevo vehículo + cliente.
      */
     public function create(): View
     {
@@ -41,7 +41,7 @@ class VehiculoController extends Controller
     }
 
     /**
-     * Store a newly created vehicle and client in the database.
+     * Guarda un vehículo y un cliente recién creados en la base de datos.
      */
     public function store(StoreVehiculoRequest $request): RedirectResponse
     {
@@ -63,7 +63,7 @@ class VehiculoController extends Controller
     }
 
     /**
-     * Display the specified vehicle with client details.
+     * Muestra el vehículo especificado con los datos del cliente.
      */
     public function show(Vehiculo $vehiculo): View
     {
@@ -72,7 +72,7 @@ class VehiculoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified vehicle.
+     * Muestra el formulario para editar el vehículo especificado.
      */
     public function edit(Vehiculo $vehiculo): View
     {
@@ -81,7 +81,7 @@ class VehiculoController extends Controller
     }
 
     /**
-     * Update the specified vehicle and its associated client.
+     * Actualiza el vehículo especificado y su cliente asociado.
      */
     public function update(UpdateVehiculoRequest $request, Vehiculo $vehiculo): RedirectResponse
     {
@@ -103,7 +103,7 @@ class VehiculoController extends Controller
     }
 
     /**
-     * Soft-delete the specified vehicle.
+     * Eliminación temporal del vehículo especificado. / Sigue almacenado en la BD
      */
     public function destroy(Vehiculo $vehiculo): RedirectResponse
     {
