@@ -52,7 +52,7 @@ Proyecto compuesto por dos módulos:
 ```bash
 # 1. Clonar el repositorio
 git clone https://github.com/BryanP16/vip2cars.git
-cd laravel_project
+cd vip2cars
 
 # 2. Instalar dependencias PHP
 composer install
@@ -112,31 +112,32 @@ survey_sessions  Sesiones anónimas (token + hashes, nunca datos personales)
 responses        Respuestas individuales de cada sesión
 ```
 
-**Diagrama ER** → ver `/er_diagram/diagrama_er.pdf`
+**Diagrama ER** → ver `/public/docs/diagrama_er_vip2cars.pdf`
 **Script SQL** → ver `/database.sql`
 
 ### Módulo 2 — VIP2CARS
 
 ```
-clients   Clientes del taller (nombre, apellido, documento, email, teléfono)
-vehicles  Vehículos (placa, marca, modelo, año, color, VIN) → FK a clients
+clientes   Clientes del taller (nombres, apellido, documento, email, teléfono)
+vehiculos  Vehículos (placa, marca, modelo, año, color, VIN) → FK a clientes
 ```
 
 #### Campos completos de vehículos + clientes
 
 | Campo | Tabla | Tipo |
 |---|---|---|
-| Placa | vehicles | VARCHAR(10) UNIQUE |
-| Marca | vehicles | VARCHAR(80) |
-| Modelo | vehicles | VARCHAR(80) |
-| Año de fabricación | vehicles | YEAR |
-| Color | vehicles | VARCHAR(40) |
-| VIN | vehicles | VARCHAR(17) |
-| Nombre del cliente | clients | VARCHAR(100) |
-| Apellidos del cliente | clients | VARCHAR(100) |
-| Nro. de documento | clients | VARCHAR(20) |
-| Correo del cliente | clients | VARCHAR(150) UNIQUE |
-| Teléfono del cliente | clients | VARCHAR(20) |
+| Placa | vehiculos | VARCHAR(10) UNIQUE |
+| Marca | vehiculos | VARCHAR(80) |
+| Modelo | vehiculos | VARCHAR(80) |
+| Año de fabricación | vehiculos | YEAR |
+| Color | vehiculos | VARCHAR(40) |
+| VIN | vehiculos | VARCHAR(17) |
+| Nombres | clientes | VARCHAR(100) |
+| Apellidos| clientes | VARCHAR(100) |
+| Tipo de documento | clientes | ENUM | 'DNI','CE','RUC','PASSPORT'
+| Nro. de documento | clientes | VARCHAR(20) |
+| Correo del cliente | clientes | VARCHAR(150) UNIQUE |
+| Teléfono del cliente | clientes | VARCHAR(20) |
 
 ---
 
@@ -161,14 +162,14 @@ vehicles  Vehículos (placa, marca, modelo, año, color, VIN) → FK a clients
 
 ### Buenas prácticas
 - **Form Requests** para validación desacoplada del controlador
-- **Soft Deletes** en `clients` y `vehicles` (datos preservados)
+- **Soft Deletes** en `clientes` y `vehiculos` (datos preservados)
 - **Transacciones DB** (`DB::transaction`) en store/update
 - **Query Scopes** `search()` en ambos modelos
-- **Eager Loading** con `with('client')` para evitar N+1
+- **Eager Loading** con `with('clientes')` para evitar N+1
 - **Paginación** con `withQueryString()` para mantener filtros
 - **Migraciones** versionadas y reproducibles
 - **Seeders** idempotentes con `firstOrCreate`
-- Código en **inglés**, comentarios y UI en **español**
+- Comentarios y UI en **español**
 
 ---
 
@@ -179,22 +180,22 @@ laravel_project/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/
-│   │   │   └── VehicleController.php   # CRUD completo
+│   │   │   └── VehiculoController.php   # CRUD completo
 │   │   └── Requests/
-│   │       ├── StoreVehicleRequest.php  # Validaciones crear
-│   │       └── UpdateVehicleRequest.php # Validaciones editar
+│   │       ├── StoreVehiculoRequest.php  # Validaciones crear
+│   │       └── UpdateVehiculoRequest.php # Validaciones editar
 │   └── Models/
-│       ├── Client.php                   # Modelo cliente + scopes
-│       └── Vehicle.php                  # Modelo vehículo + scopes
+│       ├── Cliente.php                   # Modelo cliente + scopes
+│       └── Vehiculo.php                  # Modelo vehículo + scopes
 ├── database/
 │   ├── migrations/
-│   │   ├── ..._create_clients_table.php
-│   │   └── ..._create_vehicles_table.php
+│   │   ├── ..._create_clientes_table.php
+│   │   └── ..._create_vehiculos_table.php
 │   └── seeders/
 │       └── DatabaseSeeder.php           # Datos demo
 ├── resources/views/
 │   ├── layouts/app.blade.php            # Layout base Bootstrap 5
-│   └── vehicles/
+│   └── vehiculos/
 │       ├── index.blade.php              # Listado + búsqueda
 │       ├── create.blade.php             # Formulario crear
 │       ├── edit.blade.php               # Formulario editar
@@ -219,4 +220,5 @@ Tras ejecutar `php artisan db:seed` se crean:
 
 ---
 
-*Desarrollado con Laravel 11 · PHP 8.2 · MySQL 8 · Bootstrap 5*
+*Desarrollado con Laravel 12 · PHP 8.2 · MySQL 8 · Bootstrap 5*
+*Elaborado por Bryan Polo Gomez - 70401296*
